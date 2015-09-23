@@ -1772,6 +1772,86 @@ HIDE =NEXT
 	data pointer.
 )
 
+\ Add standard Forth words:
+
+\ : <BUILDS (WORD) (CREATE) dodoes , 0 , ; 
+: DOES> R> LATEST @ >DFA ! ; 
+: >BODY ( xt -- a-addr ) 2 CELLS + ;
+
+: ABS ( n -- u ) DUP 0< IF NEGATE THEN ;
+: MAX ( n1 n2 -- n3 ) 2DUP < IF SWAP THEN DROP ;
+: MIN ( n1 n2 -- n3 ) 2DUP > IF SWAP THEN DROP ;
+\ : PAGE ( -- ) CLS ;
+\ : AT-XY ( col row -- ) TABXY ;
+\ : MS ( u -- ) Sleep SYSCALL DROP ;
+: TYPE ( c-addr u -- ) TELL ;
+\ : INCLUDED ( c-addr u -- ) EXEC ;
+: [CHAR] ( "<spaces>name" -- ) CHAR ['] LIT , , ; IMMEDIATE
+: 2OVER ( x1 x2 x3 x4 -- x1 x2 x3 x4 x1 x2 ) 3 PICK 3 PICK ;
+: CELL+ ( a-addr1 -- a-addr2 ) 1 CELLS + ;
+: CHARS ( n1 -- n2 ) ;
+: CHAR+ ( c-addr1 -- c-addr2 ) 1 CHARS + ;
+: 2! ( x1 x2 a-addr -- ) SWAP OVER ! CELL+ ! ;
+: 2@ ( a-addr -- x1 x2 ) DUP CELL+ @ SWAP @ ;
+\ : LSHIFT ( x1 u -- x2 ) 0 ?DO 2* LOOP ;
+\ : RSHIFT ( x1 u -- x2 ) 0 ?DO U2/ LOOP ;
+: MOVE ( addr1 addr2 u -- ) CMOVE ;
+: 2>R ( x1 x2 -- ) ( R: -- x1 x2 ) ['] SWAP , ['] >R , ['] >R , ; IMMEDIATE
+: 2R> ( -- x1 x2 ) ( R: x1 x2 -- ) ['] R> , ['] R> , ['] SWAP , ; IMMEDIATE
+
+\ : <# ( -- ) HERE 128 + PNSPTR ! ;
+\ : #> ( xd -- c-addr u ) DROP DROP HERE 128 + PNSPTR @ - PNSPTR @ SWAP ;
+\ : M/MOD ( n1 n2 n3 -- n4 n5 n6 ) >R 0 R@ UM/MOD R> SWAP >R UM/MOD R> ;
+\ : HOLD ( char -- ) -1 PNSPTR +! PNSPTR @ C! ;
+\ : SIGN ( n -- ) 0< IF 45 HOLD THEN ;
+\ : # ( ud1 -- ud2 ) BASE @ M/MOD ROT 9 OVER < IF 7 + THEN 48 + HOLD ;
+\ : #S ( ud1 -- ud2 ) BEGIN # OVER OVER OR 0= UNTIL ;
+
+\ : .( ( "ccc<paren>" -- )
+\   BEGIN (KEY) DUP ')' = IF DROP EXIT THEN EMIT AGAIN
+\ ; IMMEDIATE
+
+: DIGIT ( char base -- u valid )
+  SWAP 48 -
+  DUP 0< IF DROP FALSE EXIT THEN
+  DUP 16 > IF 7 - THEN
+  TUCK <= IF FALSE EXIT THEN
+  TRUE
+; 
+
+\ : >NUMBER ( ud1 c-addr1 u1 -- ud2 c-addr2 u2 )
+\   2DUP + >R 0
+\   ?DO DUP C@ BASE @ DIGIT 0= IF DROP LEAVE THEN
+\   SWAP >R SWAP BASE @ UM* DROP ROT BASE @ UM* D+ R> 1+
+\   LOOP R> OVER -
+\ ;
+
+\ : CONVERT ( ud1 c-addr1 -- ud2 c-addr2 ) CHAR+ 65535 >NUMBER DROP ;
+
+: POSTPONE ( "<spaces>name" -- )
+  BL WORD FIND DUP 0= IF ABORT THEN
+  -1 = IF
+    ['] LIT , , ['] , ,
+  ELSE
+    ,
+  THEN
+; IMMEDIATE
+
+\ : EVALUATE ( i*x c-addr u -- j*x )
+\   DUP 0= IF 2DROP EXIT THEN
+\   SETSRC BEGIN INTERPRET SOURCE NIP >IN @ < UNTIL RESTORE
+\ ;
+
+\ : C" ( -- c-addr )
+\   STATE @ IF ( compiling? )
+\     ['] LITSTRING , HERE 0 , 0 C, BEGIN (KEY) DUP '"' <> WHILE C, REPEAT
+\     DROP DUP HERE SWAP - 4- SWAP 2DUP ! 4+ SWAP 1- SWAP C! ALIGN ['] DROP ,
+\   ELSE ( immediate mode )
+\     HERE BEGIN 1+ (KEY) DUP '"' <> WHILE OVER C! REPEAT
+\     DROP HERE - 1- HERE C! HERE
+\   THEN
+\ ; IMMEDIATE
+
 (
 	WELCOME MESSAGE ----------------------------------------------------------------------
 
