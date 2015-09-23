@@ -20,3 +20,13 @@ demo6.th		demonstrates switching from compiler to execution mode
 
 	To include the primitive on-line help, use
 	'cat third help.th - | first'.
+
+
+http://lambda-the-ultimate.org/node/2452#comment-36818
+
+I suspect this has been done before. For example, here's a less well-documented minimal one I wrote 15 years ago:
+
+    http://www.ioccc.org/1992/buzzard.2.c
+    http://www.ioccc.org/1992/buzzard.2.design
+
+Because the extremely minimal bootstrapping system does not support comments in the bootstrapped source code, the bootstrapping source file is not fully commented, so the latter link is a link to a separate document with additional commentary, rather than the actual boostrap source file (third).
