@@ -103,6 +103,8 @@
 	,		\ and compile that
 ;
 
+: 0< 0 < ;
+
 \ RECURSE makes a recursive call to the current word that is being compiled.
 \
 \ Normally while a word is being compiled, it is marked HIDDEN so that references to the

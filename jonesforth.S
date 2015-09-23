@@ -887,14 +887,6 @@ code_\label :			// assembler code follows
 	pushl %eax
 	NEXT
 
-	defcode "0<",2,,ZLT	// comparisons with 0
-	pop %eax
-	test %eax,%eax
-	setl %al
-	movzbl %al,%eax
-	pushl %eax
-	NEXT
-
 	defcode "0>",2,,ZGT
 	pop %eax
 	test %eax,%eax
