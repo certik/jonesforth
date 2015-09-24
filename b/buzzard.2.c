@@ -64,8 +64,15 @@ void r(int x)
         case 4: // immediate
             *m -= 2; c 2; break;
         case 5: // _read
-            for(w=scanf("%s",s)<1?exit(0),0:L;strcmp(s,&s[m[w+1]]);w=m[w]);
-            w-1 ? r(w+2) : (c 2, c atoi(s));
+            if (scanf("%s", s) < 1) exit(0);
+            w = L;
+            while (strcmp(s,&s[m[w+1]])) w = m[w];
+            if (w == 1) {
+                c 2;
+                c atoi(s);
+            } else {
+                r(w+2);
+            }
             break;
         case 6: // @
             T[S] = m[T[S]]; break;
