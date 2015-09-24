@@ -69,8 +69,15 @@ void r(int x)
             w = L;
             while (strcmp(s,&s[m[w+1]])) w = m[w];
             if (w == 1) {
+                int i;
+                char *ptr;
                 c 2;
-                c atoi(s);
+                i = strtol(s, &ptr, 10);
+                if (ptr == s) {
+                    printf("word: %s\n", s);
+                    error("Unknown word");
+                }
+                c i;
             } else {
                 r(w+2);
             }
