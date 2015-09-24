@@ -19,12 +19,8 @@ CC=gcc
 
 all: first
 
-buzzard.2: buzzard.2.c
-	$(CC) $(CFLAGS) buzzard.2.c -o buzzard.2
-
-first: buzzard.2
-	$(RM) -f first
-	$(LN) buzzard.2 first
+first: buzzard.2.c
+	$(CC) $(CFLAGS) buzzard.2.c -o first
 
 test: first
 	cat demo1.1st | ./first
