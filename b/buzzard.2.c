@@ -120,6 +120,6 @@ int main()
     c I-1;
     for (i = 6; i < 16; c i++) a(1);
     m[1] = m[0];
-    for (*m += 512; ; r(m[I++]));
+    for (m[0] += 512; ; r(m[I++]));
     return 0;
 }
