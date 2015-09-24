@@ -25,7 +25,6 @@ int T[500]; // Stack
 int S=0; // T[S] is the top of the stack (TOS)
 
 int I; // m[I] is the next instruction in the instruction stream
-int w;
 
 void error(char *message)
 {
@@ -51,6 +50,7 @@ void a(int x)
 
 void r(int x)
 {
+    int w;
     switch(m[x++]) {
         case 0: // pushint
             S++;
@@ -93,16 +93,17 @@ void r(int x)
 
 int main()
 {
+    int i;
     a(3);
     a(4);
     a(1);
-    w = m[0];
+    i = m[0];
     c 5;
     c 2;
     I = m[0];
-    c w;
+    c i;
     c I-1;
-    for (w = 6; w < 16; c w++) a(1);
+    for (i = 6; i < 16; c i++) a(1);
     m[1] = m[0];
     for (*m += 512; ; r(m[I++]));
     return 0;
