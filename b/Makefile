@@ -13,7 +13,7 @@ RM=rm
 LN=ln
 
 #CFLAGS=-Wall -Wextra -fPIC -O3 -march=native -ffast-math -funroll-loops
-CFLAGS=-Wall -Wextra -fPIC -g
+CFLAGS=-Wall -Wextra -fPIC -g -ggdb
 
 CC=gcc
 
