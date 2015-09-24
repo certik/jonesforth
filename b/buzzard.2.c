@@ -4,8 +4,11 @@
 
 #define N_m 20000
 #define N_s 5000
+#define N_T 500
 
 #define M_CHECK(x) { if (x < 0 || x >= N_m) error("Out of memory"); }
+#define T_CHECK(x) { if (x < 0) error("Stack underflow"); if (x >= N_T) error("Stack overflow"); }
+
 #define c M_CHECK(m[0]) m[m[0]++] =
 
 char s[N_s]; // String storage for the names of built-in and defined primitives
@@ -26,8 +29,8 @@ int t=64; // position of the next available space for a new string to be added
 int m[N_m]={32};
 int L=1; // m[L] is the last word added to main memory
 
-int T[500]; // Stack
-int S=0; // T[S] is the top of the stack (TOS)
+int T[N_T]; // Stack
+int S=3; // T[S] is the top of the stack (TOS)
 
 int I; // m[I] is the next instruction in the instruction stream
 
@@ -62,6 +65,7 @@ void r(int x)
         case 0: // pushint
             S++;
             M_CHECK(I)
+            T_CHECK(S)
             T[S] = m[I++]; break;
         case 1: // compile me
             c x; break;
@@ -91,28 +95,42 @@ void r(int x)
             }
             break;
         case 6: // @
+            T_CHECK(S)
             M_CHECK(T[S])
             T[S] = m[T[S]]; break;
         case 7: // !
+            T_CHECK(S-1)
+            T_CHECK(S)
             M_CHECK(T[S])
             m[T[S]] = T[S-1]; S--; S--; break;
         case 8: // -
+            T_CHECK(S-1)
+            T_CHECK(S)
             T[S-1] = T[S-1] - T[S]; S--; break;
         case 9: // *
+            T_CHECK(S-1)
+            T_CHECK(S)
             T[S-1] = T[S-1] * T[S]; S--; break;
         case 10: // /
+            T_CHECK(S-1)
+            T_CHECK(S)
             T[S-1] = T[S-1] / T[S]; S--; break;
         case 11: // <0
+            T_CHECK(S)
             T[S] = 0 > T[S]; break;
         case 12: // exit
             M_CHECK(m[1])
             I = m[m[1]--]; break;
         case 13: // echo
+            T_CHECK(S)
             putchar(T[S]); S--; break;
         case 14: // key
             S++;
+            T_CHECK(S)
             T[S] = getchar(); break;
         case 15: // _pick
+            T_CHECK(S)
+            T_CHECK(S-T[S])
             T[S] = T[S-T[S]]; break;
     }
 }
