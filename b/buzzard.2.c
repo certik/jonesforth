@@ -6,6 +6,7 @@
 
 char s[5000]; // String storage for the names of built-in and defined primitives
 int t=64; // position of the next available space for a new string to be added
+//  s[0..64] ... temporary storage for the current word being read
 //  s[64..t] ... all the words
 
 /*
