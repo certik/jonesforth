@@ -22,7 +22,7 @@ int m[20000]={32};
 int L=1; // m[L] is the last word added to main memory
 
 int T[500]; // Stack
-int S=0; // Top of the stack (TOS)
+int S=1; // T[S] is the top of the stack (TOS)
 
 int I;
 int w;
@@ -54,7 +54,7 @@ void r(int x)
     switch(m[x++]) {
         case 0: // pushint
             S++;
-            T[S+1] = m[I++]; break;
+            T[S] = m[I++]; break;
         case 1: // compile me
             c x; break;
         case 2: // run me
@@ -68,26 +68,26 @@ void r(int x)
             w-1 ? r(w+2) : (c 2, c atoi(s));
             break;
         case 6: // @
-            T[S+1] = m[T[S+1]]; break;
+            T[S] = m[T[S]]; break;
         case 7: // !
-            m[T[S+1]] = T[S]; S--; S--; break;
+            m[T[S]] = T[S-1]; S--; S--; break;
         case 8: // -
-            T[S] = T[S] - T[S+1]; S--; break;
+            T[S-1] = T[S-1] - T[S]; S--; break;
         case 9: // *
-            T[S] = T[S] * T[S+1]; S--; break;
+            T[S-1] = T[S-1] * T[S]; S--; break;
         case 10: // /
-            T[S] = T[S] / T[S+1]; S--; break;
+            T[S-1] = T[S-1] / T[S]; S--; break;
         case 11: // <0
-            T[S+1] = 0 > T[S+1]; break;
+            T[S] = 0 > T[S]; break;
         case 12: // exit
             I = m[m[1]--]; break;
         case 13: // echo
-            putchar(T[S+1]); S--; break;
+            putchar(T[S]); S--; break;
         case 14: // key
             S++;
-            T[S+1] = getchar(); break;
+            T[S] = getchar(); break;
         case 15: // _pick
-            T[S+1] = T[S-T[S+1]]; break;
+            T[S] = T[S-T[S]]; break;
     }
 }
 
