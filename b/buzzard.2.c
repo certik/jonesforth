@@ -1,5 +1,9 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #define c m[m[0]++] =
-#define z;break;case
+#define z ;break;case
 
 char s[5000];
 int m[20000]={32},L=1,I,T[500],*S=T,t=64,w,f;
