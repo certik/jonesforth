@@ -7,13 +7,21 @@
 char s[5000];
 int m[20000]={32}, L=1, I, T[500], *S=T, t=64, w, f;
 
+void error(char *message)
+{
+    printf("%s\n", message);
+    exit(1);
+}
+
 void a(int x)
 {
+    int stat;
     c L;
     L = *m-1;
     c t;
     c x;
-    scanf("%s", s+t);
+    stat = scanf("%s", s+t);
+    if (stat != 1) error("Unexpected end of input.");
     t += strlen(s+t)+1;
 }
 
