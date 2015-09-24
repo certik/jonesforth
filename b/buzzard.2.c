@@ -21,29 +21,20 @@ a(x)
 r(x)
 {
    switch(m[x++]){
-	z 0:	*++S=f;
-		f=m[I++]
-
+	z 0:	*++S=f; f=m[I++]
 	z 1:	c x
-
-	z 2:	m[++m[1]]=I;
-		I=x
-
-	z 3:	a(1);
-		c 2
-
-	z 4:	*m-=2;c 2
+	z 2:	m[++m[1]]=I; I=x
+	z 3:	a(1); c 2
+	z 4:	*m-=2; c 2
 
     // _read
 	z 5:	for(w=scanf("%s",s)<1?exit(0),0:L;strcmp(s,&s[m[w+1]]);w=m[w]);
-		w-1 ? r(w+2) : (c 2,c atoi(s))
-
+            w-1 ? r(w+2) : (c 2,c atoi(s))
     // @
 	z 6:	f=m[f]
 
     // !
-	z 7:	m[f]= *S--;
-		f= *S--
+	z 7:	m[f]= *S--; f= *S--
 
     // -
 	z 8:	f= *S --- f
@@ -61,12 +52,10 @@ r(x)
 	z 12:	I=m[m[1]--]
 
     // echo
-	z 13:	putchar(f);
-		f= *S--
+	z 13:	putchar(f); f= *S--
 
     // key
-	z 14:	*++S=f;
-		f=getchar();
+	z 14:	*++S=f; f=getchar();
 
     // _pick
 	z 15:	f=S[-f];
