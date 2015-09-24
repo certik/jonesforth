@@ -2,12 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define N_main_memory 20000
+#define N_m 20000
+#define N_s 5000
 
-#define M_CHECK(x) { if (x < 0 || x >= N_main_memory) error("Out of memory"); }
+#define M_CHECK(x) { if (x < 0 || x >= N_m) error("Out of memory"); }
 #define c M_CHECK(m[0]) m[m[0]++] =
 
-char s[5000]; // String storage for the names of built-in and defined primitives
+char s[N_s]; // String storage for the names of built-in and defined primitives
 int t=64; // position of the next available space for a new string to be added
 //  s[0..64] ... temporary storage for the current word being read
 //  s[64..t] ... all the words
@@ -22,7 +23,7 @@ int t=64; // position of the next available space for a new string to be added
  *  m[3], m[4], m[5] ... unused
  *  m[32..m[0]] ... dictionary
  */
-int m[N_main_memory]={32};
+int m[N_m]={32};
 int L=1; // m[L] is the last word added to main memory
 
 int T[500]; // Stack
@@ -50,6 +51,7 @@ void a(int x)
     c x; // code pointer
     if (scanf("%s", &s[t]) != 1) error("Unexpected end of input.");
     t += strlen(&s[t])+1; // s[t] now points to the next available slot
+    if (t + 64 > N_s) error("String storage too small.");
 }
 
 void r(int x)
