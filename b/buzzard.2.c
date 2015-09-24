@@ -8,7 +8,7 @@
 char s[5000];
 int m[20000]={32}, L=1, I, T[500], *S=T, t=64, w, f;
 
-a(x)
+void a(int x)
 {
    c L;
    L = *m-1;
@@ -18,7 +18,7 @@ a(x)
    t += strlen(s+t)+1;
 }
 
-r(x)
+void r(int x)
 {
    switch(m[x++]) {
 	z 0:	*++S = f; f = m[I++]
@@ -66,7 +66,7 @@ r(x)
    }
 }
 
-main()
+int main()
 {
    a(3);
    a(4);
@@ -81,4 +81,5 @@ main()
       a(1), c w++;
    m[1] = *m;
    for (*m+=512; ; r(m[I++]));
+   return 0;
 }
