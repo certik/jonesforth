@@ -23,7 +23,7 @@ int L=1; // m[L] is the last word added to main memory
 
 int T[500]; // Stack
 int S=0; // Top of the stack (TOS)
-int f; // The value of T[S]
+int f; // The value of T[S+1]
 
 int I;
 int w;
@@ -53,11 +53,11 @@ void a(int x)
 void r(int x)
 {
     switch(m[x++]) {
-        case 0:
+        case 0: // pushint
             T[++S] = f; f = m[I++]; break;
-        case 1:
+        case 1: // compile me
             c x; break;
-        case 2:
+        case 2: // run me
             m[++m[1]] = I; I = x; break;
         case 3: // :
             a(1); c 2; break;
