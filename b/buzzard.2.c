@@ -96,14 +96,14 @@ int main()
     a(3);
     a(4);
     a(1);
-    w = *m;
+    w = m[0];
     c 5;
     c 2;
-    I = *m;
+    I = m[0];
     c w;
     c I-1;
     for (w = 6; w < 16; c w++) a(1);
-    m[1] = *m;
+    m[1] = m[0];
     for (*m += 512; ; r(m[I++]));
     return 0;
 }
