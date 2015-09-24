@@ -24,7 +24,7 @@ int L=1; // m[L] is the last word added to main memory
 int T[500]; // Stack
 int S=0; // T[S] is the top of the stack (TOS)
 
-int I;
+int I; // m[I] is the next instruction in the instruction stream
 int w;
 
 void error(char *message)
