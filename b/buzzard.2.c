@@ -4,8 +4,8 @@
 
 #define N_main_memory 20000
 
-#define m_check(x) if (x < 0 || x >= N_main_memory) error("Out of memory")
-#define c m_check(m[0]); m[m[0]++] =
+#define M_CHECK(x) { if (x < 0 || x >= N_main_memory) error("Out of memory"); }
+#define c M_CHECK(m[0]) m[m[0]++] =
 
 char s[5000]; // String storage for the names of built-in and defined primitives
 int t=64; // position of the next available space for a new string to be added
@@ -55,16 +55,16 @@ void a(int x)
 void r(int x)
 {
     int w;
-    m_check(x);
+    M_CHECK(x)
     switch(m[x++]) {
         case 0: // pushint
             S++;
-            m_check(I);
+            M_CHECK(I)
             T[S] = m[I++]; break;
         case 1: // compile me
             c x; break;
         case 2: // run me
-            m_check(m[1]+1);
+            M_CHECK(m[1]+1)
             m[++m[1]] = I; I = x; break;
         case 3: // :
             a(1); c 2; break;
@@ -89,10 +89,10 @@ void r(int x)
             }
             break;
         case 6: // @
-            m_check(T[S]);
+            M_CHECK(T[S])
             T[S] = m[T[S]]; break;
         case 7: // !
-            m_check(T[S]);
+            M_CHECK(T[S])
             m[T[S]] = T[S-1]; S--; S--; break;
         case 8: // -
             T[S-1] = T[S-1] - T[S]; S--; break;
@@ -103,7 +103,7 @@ void r(int x)
         case 11: // <0
             T[S] = 0 > T[S]; break;
         case 12: // exit
-            m_check(m[1]);
+            M_CHECK(m[1])
             I = m[m[1]--]; break;
         case 13: // echo
             putchar(T[S]); S--; break;
@@ -134,7 +134,7 @@ int main()
     m[1] = m[0];
     m[0] += 512;
     for (;;) {
-        m_check(I);
+        M_CHECK(I)
         r(m[I++]);
     };
     return 0;
