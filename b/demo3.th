@@ -7,7 +7,7 @@
 	  drop		( and delete the saved value )
         else
 	  .
-	endif
+    then
 ;
 
 : demo3 10 0 do i printfour loop cr ;
