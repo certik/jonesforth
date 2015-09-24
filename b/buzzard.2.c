@@ -55,13 +55,16 @@ void a(int x)
 void r(int x)
 {
     int w;
+    m_check(x);
     switch(m[x++]) {
         case 0: // pushint
             S++;
+            m_check(I);
             T[S] = m[I++]; break;
         case 1: // compile me
             c x; break;
         case 2: // run me
+            m_check(m[1]+1);
             m[++m[1]] = I; I = x; break;
         case 3: // :
             a(1); c 2; break;
@@ -70,7 +73,7 @@ void r(int x)
         case 5: // _read
             if (scanf("%s", s) != 1) exit(0);
             w = L;
-            while (strcmp(s,&s[m[w+1]])) w = m[w];
+            while (strcmp(s, &s[m[w+1]])) w = m[w];
             if (w == 1) {
                 int i;
                 char *ptr;
@@ -86,8 +89,10 @@ void r(int x)
             }
             break;
         case 6: // @
+            m_check(T[S]);
             T[S] = m[T[S]]; break;
         case 7: // !
+            m_check(T[S]);
             m[T[S]] = T[S-1]; S--; S--; break;
         case 8: // -
             T[S-1] = T[S-1] - T[S]; S--; break;
@@ -98,6 +103,7 @@ void r(int x)
         case 11: // <0
             T[S] = 0 > T[S]; break;
         case 12: // exit
+            m_check(m[1]);
             I = m[m[1]--]; break;
         case 13: // echo
             putchar(T[S]); S--; break;
@@ -126,6 +132,10 @@ int main()
         c i++;
     }
     m[1] = m[0];
-    for (m[0] += 512; ; r(m[I++]));
+    m[0] += 512;
+    for (;;) {
+        m_check(I);
+        r(m[I++]);
+    };
     return 0;
 }
