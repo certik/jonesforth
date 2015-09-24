@@ -22,7 +22,7 @@ int m[20000]={32};
 int L=1; // m[L] is the last word added to main memory
 
 int T[500]; // Stack
-int *S=T; // Top of the stack (TOS)
+int S=0; // Top of the stack (TOS)
 int f; // The value of T[S]
 
 int I;
@@ -54,7 +54,7 @@ void r(int x)
 {
     switch(m[x++]) {
         case 0:
-            *++S = f; f = m[I++]; break;
+            T[++S] = f; f = m[I++]; break;
         case 1:
             c x; break;
         case 2:
@@ -70,23 +70,23 @@ void r(int x)
         case 6: // @
             f = m[f]; break;
         case 7: // !
-            m[f] = *S--; f = *S--; break;
+            m[f] = T[S--]; f = T[S--]; break;
         case 8: // -
-            f = (*S--) - f; break;
+            f = T[S--] - f; break;
         case 9: // *
-            f *= *S--; break;
+            f *= T[S--]; break;
         case 10: // /
-            f = (*S--) / f; break;
+            f = T[S--] / f; break;
         case 11: // <0
             f = 0 > f; break;
         case 12: // exit
             I = m[m[1]--]; break;
         case 13: // echo
-            putchar(f); f = *S--; break;
+            putchar(f); f = T[S--]; break;
         case 14: // key
-            *++S =f ; f = getchar(); break;
+            T[++S] =f ; f = getchar(); break;
         case 15: // _pick
-            f = S[-f]; break;
+            f = T[S-f]; break;
     }
 }
 
