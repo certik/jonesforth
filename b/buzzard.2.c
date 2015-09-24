@@ -2,7 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define c m[m[0]++] =
+#define N_main_memory 20000
+
+#define m_check(x) if (m[0] >= N_main_memory) error("Out of memory")
+#define c m_check(m[0]); m[m[0]++] =
 
 char s[5000]; // String storage for the names of built-in and defined primitives
 int t=64; // position of the next available space for a new string to be added
@@ -19,7 +22,7 @@ int t=64; // position of the next available space for a new string to be added
  *  m[3], m[4], m[5] ... unused
  *  m[32..m[0]] ... dictionary
  */
-int m[20000]={32};
+int m[N_main_memory]={32};
 int L=1; // m[L] is the last word added to main memory
 
 int T[500]; // Stack
@@ -118,7 +121,10 @@ int main()
     I = m[0];
     c i;
     c I-1;
-    for (i = 6; i < 16; c i++) a(1);
+    for (i = 6; i < 16; ) {
+        a(1);
+        c i++;
+    }
     m[1] = m[0];
     for (m[0] += 512; ; r(m[I++]));
     return 0;
