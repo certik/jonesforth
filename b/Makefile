@@ -36,7 +36,7 @@ CPP=/usr/ccs/lib/acpp
 #	to see if your compiler can handle them.
 #
 #CFLAGS=-O -Xa
-CFLAGS=-Xa
+CFLAGS=-O3 -march=native -ffast-math -funroll-loops
 CC=cc
 
 # misc shell babble
