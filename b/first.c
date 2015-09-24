@@ -21,9 +21,11 @@ int t=64; // position of the next available space for a new string to be added
  *  Dictionary is a list of words (header, data field).
  *  header = (address of the previous word, index into string storage, code pointer)
  *
- *  m[0] ... pointer to the first empty slot (m[32..m[0]] is the dictionary)
- *  m[1] ... top of the return stack (m[?..m[1]])
- *  m[3], m[4], m[5] ... unused
+ *  m[0] ... dictionary pointer: pointer to the first empty slot in the
+ *           dictionary (m[32..m[0]] is the dictionary)
+ *  m[1] ... return stack pointer: top of the return stack (m[?..m[1]])
+ *  m[2] ... should always be 0 -- fake dictionary entry that means "pushint"
+ *  m[3], m[4], m[5] ... unused (user can use as variables)
  *  m[32..m[0]] ... dictionary
  */
 int m[N_m]={32};
