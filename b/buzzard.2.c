@@ -24,7 +24,11 @@ r(x)
 	z 0:	*++S = f; f = m[I++]
 	z 1:	c x
 	z 2:	m[++m[1]] = I; I = x
+
+    // :
 	z 3:	a(1); c 2
+
+    // immediate
 	z 4:	*m -= 2; c 2
 
     // _read
