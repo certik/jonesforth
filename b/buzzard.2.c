@@ -3,7 +3,6 @@
 #include <string.h>
 
 #define c m[m[0]++] =
-#define z ;break;case
 
 char s[5000];
 int m[20000]={32}, L=1, I, T[500], *S=T, t=64, w, f;
@@ -60,18 +59,17 @@ void r(int x)
 
 int main()
 {
-   a(3);
-   a(4);
-   a(1);
-   w = *m;
-   c 5;
-   c 2;
-   I = *m;
-   c w;
-   c I-1;
-   for (w=6; w<16; )
-      a(1), c w++;
-   m[1] = *m;
-   for (*m+=512; ; r(m[I++]));
-   return 0;
+    a(3);
+    a(4);
+    a(1);
+    w = *m;
+    c 5;
+    c 2;
+    I = *m;
+    c w;
+    c I-1;
+    for (w = 6; w < 16; c w++) a(1);
+    m[1] = *m;
+    for (*m += 512; ; r(m[I++]));
+    return 0;
 }
