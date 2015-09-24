@@ -4,7 +4,7 @@
 
 #define N_main_memory 20000
 
-#define m_check(x) if (m[0] >= N_main_memory) error("Out of memory")
+#define m_check(x) if (x >= N_main_memory) error("Out of memory")
 #define c m_check(m[0]); m[m[0]++] =
 
 char s[5000]; // String storage for the names of built-in and defined primitives
