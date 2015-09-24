@@ -11,6 +11,9 @@
 
 #define c M_CHECK(m[0]) m[m[0]++] =
 
+// Note: All ranges like a..b are of the usual C form [a, b), i.e. including a,
+// excluding b.
+
 char s[N_s]; // String storage for the names of built-in and defined primitives
 int t=64; // position of the next available space for a new string to be added
 //  s[0..64] ... temporary storage for the current word being read
@@ -19,7 +22,7 @@ int t=64; // position of the next available space for a new string to be added
 /*
  *  Main memory (random access), contains return stack and dictionary.
  *  Dictionary is a list of words (header, data field).
- *  header = (address of the previous word, index into string storage, code pointer)
+ *  header = (address of the previous word, index into string storage, instruction to execute)
  *
  *  m[0] ... dictionary pointer: pointer to the first empty slot in the
  *           dictionary (m[32..m[0]] is the dictionary)
@@ -27,6 +30,7 @@ int t=64; // position of the next available space for a new string to be added
  *  m[2] ... should always be 0 -- fake dictionary entry that means "pushint"
  *  m[3], m[4], m[5] ... unused (user can use as variables)
  *  m[32..m[0]] ... dictionary
+ *  m[?..m[1]]  ... return stack
  */
 int m[N_m]={32};
 int L=1; // m[L] is the last word added to main memory
@@ -34,7 +38,8 @@ int L=1; // m[L] is the last word added to main memory
 int T[N_T]; // Stack
 int S=0; // T[S] is the top of the stack (TOS)
 
-int I; // m[I] is the next instruction in the instruction stream
+int I; // m[I] is the code pointer to the next instruction to execute, i.e.
+// m[m[I]] is the actual instruction, an integer 0..16
 
 void error(char *message)
 {
@@ -51,14 +56,23 @@ void a(int x)
 {
     // Add a new word (L, t, x)
     c L; // m[L] is the place of the last word
-    L = m[0]-1; // m[L] is now the place of this word
+    L = m[0]-1; // m[L] is now the place of this word, i.e. the header of the
+    // new word being inserted is at m[L], m[L+1], m[L+2]
     c t; // s[t] is the name (string) of this word
-    c x; // code pointer
+    c x; // code instruction, between 0..16
+    if (x < 0 || x > 15) error("'x' out of range");
     if (scanf("%s", &s[t]) != 1) error("Unexpected end of input.");
     t += strlen(&s[t])+1; // s[t] now points to the next available slot
     if (t + 64 > N_s) error("String storage too small.");
 }
 
+/*
+ * Execute an instruction.
+ *
+ * x ... code pointer (to the instruction)
+ *
+ * The instruction given in m[x] will be executed.
+ */
 void r(int x)
 {
     int w;
@@ -80,9 +94,15 @@ void r(int x)
             m[0] -= 2; c 2; break;
         case 5: // _read
             if (scanf("%s", s) != 1) exit(0);
+            // See if 's' is in the dictionary. The 'w' points to the current
+            // word, i.e. m[w], m[w+1], m[w+2] is the header, i.e. m[w] is the
+            // address of the previous word, m[w+1] is the index into string
+            // storage and m[w+2] is the code pointer.
             w = L;
             while (strcmp(s, &s[m[w+1]])) w = m[w];
             if (w == 1) {
+                // Term 's' not found in the dictionary. If 's' is an integer,
+                // add it to stack. Otherwise error out.
                 int i;
                 char *ptr;
                 c 2;
@@ -93,6 +113,8 @@ void r(int x)
                 }
                 c i;
             } else {
+                // The term 's' is a known dictionary word, 'w' points to it.
+                // We execute the corresponding instruction given in m[w+2].
                 r(w+2);
             }
             break;
@@ -134,6 +156,9 @@ void r(int x)
             T_CHECK(S)
             T_CHECK(S-T[S])
             T[S] = T[S-T[S]]; break;
+        default:
+            error("Unknown instruction.");
+            break;
     }
 }
 
