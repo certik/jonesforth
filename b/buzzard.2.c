@@ -66,7 +66,7 @@ void r(int x)
         case 3: // :
             a(1); c 2; break;
         case 4: // immediate
-            *m -= 2; c 2; break;
+            m[0] -= 2; c 2; break;
         case 5: // _read
             if (scanf("%s", s) != 1) exit(0);
             w = L;
