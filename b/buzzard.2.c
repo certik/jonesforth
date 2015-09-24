@@ -10,60 +10,52 @@ int m[20000]={32}, L=1, I, T[500], *S=T, t=64, w, f;
 
 void a(int x)
 {
-   c L;
-   L = *m-1;
-   c t;
-   c x;
-   scanf("%s", s+t);
-   t += strlen(s+t)+1;
+    c L;
+    L = *m-1;
+    c t;
+    c x;
+    scanf("%s", s+t);
+    t += strlen(s+t)+1;
 }
 
 void r(int x)
 {
-   switch(m[x++]) {
-	z 0:	*++S = f; f = m[I++]
-	z 1:	c x
-	z 2:	m[++m[1]] = I; I = x
-
-    // :
-	z 3:	a(1); c 2
-
-    // immediate
-	z 4:	*m -= 2; c 2
-
-    // _read
-	z 5:	for(w=scanf("%s",s)<1?exit(0),0:L;strcmp(s,&s[m[w+1]]);w=m[w]);
-            w-1 ? r(w+2) : (c 2, c atoi(s))
-    // @
-	z 6:	f = m[f]
-
-    // !
-	z 7:	m[f] = *S--; f = *S--
-
-    // -
-	z 8:	f = (*S--) - f
-
-    // *
-	z 9:	f *= *S--
-
-    // /
-	z 10:	f = (*S--) / f
-
-    // <0
-	z 11:	f = 0 > f
-
-    // exit
-	z 12:	I = m[m[1]--]
-
-    // echo
-	z 13:	putchar(f); f = *S--
-
-    // key
-	z 14:	*++S =f ; f = getchar();
-
-    // _pick
-	z 15:	f = S[-f];
-   }
+    switch(m[x++]) {
+        case 0:
+            *++S = f; f = m[I++]; break;
+        case 1:
+            c x; break;
+        case 2:
+            m[++m[1]] = I; I = x; break;
+        case 3: // :
+            a(1); c 2; break;
+        case 4: // immediate
+            *m -= 2; c 2; break;
+        case 5: // _read
+            for(w=scanf("%s",s)<1?exit(0),0:L;strcmp(s,&s[m[w+1]]);w=m[w]);
+            w-1 ? r(w+2) : (c 2, c atoi(s));
+            break;
+        case 6: // @
+            f = m[f]; break;
+        case 7: // !
+            m[f] = *S--; f = *S--; break;
+        case 8: // -
+            f = (*S--) - f; break;
+        case 9: // *
+            f *= *S--; break;
+        case 10: // /
+            f = (*S--) / f; break;
+        case 11: // <0
+            f = 0 > f; break;
+        case 12: // exit
+            I = m[m[1]--]; break;
+        case 13: // echo
+            putchar(f); f = *S--; break;
+        case 14: // key
+            *++S =f ; f = getchar(); break;
+        case 15: // _pick
+            f = S[-f]; break;
+    }
 }
 
 int main()
