@@ -12,20 +12,10 @@
 RM=rm
 LN=ln
 
-# flags for ansi compiles
-#
-# NOTE: Some ANSI compilers make use of -Xa to turn on ANSI mode,
-#	others such as gcc may want -ansi, others may want nothing
-#	at all.  Adjust the CFLAGS line as needed.
-#
-# NOTE: Some compilers cannot optimize, or optimize some entries
-#	entries incorrectly.  You might want need to turn on -O 
-#	to see if your compiler can handle them.
-#
-#CFLAGS=-O -Xa
-CFLAGS=-O3 -march=native -ffast-math -funroll-loops
-CC=cc
+#CFLAGS=-O3 -march=native -ffast-math -funroll-loops
+CFLAGS=-Wall -Wextra -fPIC -g
 
+CC=gcc
 
 all: first
 
