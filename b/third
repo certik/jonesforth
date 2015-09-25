@@ -36,6 +36,8 @@ _main
 
 : drop _x! ;
 
+: depth 3 @ 4 * ;
+
 : dec dup @ 1 - swap ! ;
 
 : tor r @ @ swap r @ ! r @ 1 + r ! r @ ! ;

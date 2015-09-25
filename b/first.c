@@ -31,7 +31,8 @@ int t=64; // position of the next available space for a new string to be added
  *           dictionary (m[32..m[0]] is the dictionary)
  *  m[1] ... return stack pointer: top of the return stack (m[?..m[1]])
  *  m[2] ... should always be 0 -- fake dictionary entry that means "pushint"
- *  m[3..32] ... unused (user can use as variables)
+ *  m[3] ... stack pointer S
+ *  m[4..32] ... unused (user can use as variables)
  *  The memory m[32..N_m] is used for the dictionary as well as other data
  *  (mingled together). The last dictionary word being at m[L] (and also m[L]
  *  being the first item in the header points to the position of the previous
@@ -110,7 +111,7 @@ void r(int x)
             S++;
             M_CHECK(I)
             T_CHECK(S)
-            T[S] = m[I++]; break;
+            T[S] = m[I++]; m[3] = S; break;
         case 1: // compile me
             c x; break;
         case 2: // run me
@@ -156,19 +157,19 @@ void r(int x)
             T_CHECK(S-1)
             T_CHECK(S)
             M_CHECK(T[S])
-            m[T[S]] = T[S-1]; S--; S--; break;
+            m[T[S]] = T[S-1]; S--; S--; m[3] = S; break;
         case 8: // -
             T_CHECK(S-1)
             T_CHECK(S)
-            T[S-1] = T[S-1] - T[S]; S--; break;
+            T[S-1] = T[S-1] - T[S]; S--; m[3] = S; break;
         case 9: // *
             T_CHECK(S-1)
             T_CHECK(S)
-            T[S-1] = T[S-1] * T[S]; S--; break;
+            T[S-1] = T[S-1] * T[S]; S--; m[3] = S; break;
         case 10: // /
             T_CHECK(S-1)
             T_CHECK(S)
-            T[S-1] = T[S-1] / T[S]; S--; break;
+            T[S-1] = T[S-1] / T[S]; S--; m[3] = S; break;
         case 11: // <0
             T_CHECK(S)
             T[S] = 0 > T[S]; break;
@@ -179,11 +180,13 @@ void r(int x)
             break;
         case 13: // echo
             T_CHECK(S)
-            putchar(T[S]); S--; break;
+            putchar(T[S]); S--; m[3] = S; break;
         case 14: // key
             S++;
             T_CHECK(S)
-            T[S] = getchar(); break;
+            T[S] = getchar();
+            m[3] = S;
+            break;
         case 15: // _pick
             T_CHECK(S)
             T_CHECK(S-T[S])
@@ -214,6 +217,7 @@ int main()
     RS0 = m[1];
     RS_CHECK(m[1])
     m[0] += N_rs;
+    m[3] = S;
     for (;;) {
         M_CHECK(I)
         r(m[I++]);
