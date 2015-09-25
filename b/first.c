@@ -2,12 +2,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define N_m 20000
-#define N_s 5000
-#define N_T 500
+#define N_m 20000  // Main memory size
+#define N_s  5000  // String storage size
+#define N_T   500  // Stack size
+#define N_rs  512  // Return stack size
 
 #define M_CHECK(x) { if (x < 0 || x >= N_m) error("Out of memory"); }
 #define T_CHECK(x) { if (x < 0) error("Stack underflow"); if (x >= N_T) error("Stack overflow"); }
+#define RS_CHECK(x) { if (x-RS0 < 0) error("Return stack underflow"); if (x-RS0 >= N_rs) error("Return stack overflow"); }
 
 #define c M_CHECK(m[0]) m[m[0]++] =
 
@@ -28,15 +30,25 @@ int t=64; // position of the next available space for a new string to be added
  *           dictionary (m[32..m[0]] is the dictionary)
  *  m[1] ... return stack pointer: top of the return stack (m[?..m[1]])
  *  m[2] ... should always be 0 -- fake dictionary entry that means "pushint"
- *  m[3], m[4], m[5] ... unused (user can use as variables)
- *  m[32..m[0]] ... dictionary
- *  m[?..m[1]]  ... return stack
+ *  m[3..32] ... unused (user can use as variables)
+ *  The memory m[32..N_m] is used for the dictionary as well as other data
+ *  (mingled together). The last dictionary word being at m[L] (and also m[L]
+ *  being the first item in the header points to the position of the previous
+ *  word). One writes to the memory using `c num`.
+ *  m[RS0..RS0+N_rs]  ... return stack, m[1] top of the return stack. The space
+ *  for the stack is reserved using:
+ *      m[1] = m[0];
+ *      RS0 = m[1];
+ *      m[0] += N_rs;
+ *  So the return stack is N_rs elements long and it starts at RS0.
  */
 int m[N_m]={32};
 int L=1; // m[L] is the last word added to main memory
 
 int T[N_T]; // Stack
 int S=0; // T[S] is the top of the stack (TOS)
+
+int RS0; // Bottom of the return stack
 
 int I; // m[I] is the code pointer to the next instruction to execute, i.e.
 // m[m[I]] is the actual instruction, an integer 0..16
@@ -86,8 +98,10 @@ void r(int x)
         case 1: // compile me
             c x; break;
         case 2: // run me
-            M_CHECK(m[1]+1)
-            m[++m[1]] = I; I = x; break;
+            m[1]++;
+            M_CHECK(m[1])
+            RS_CHECK(m[1])
+            m[m[1]] = I; I = x; break;
         case 3: // :
             a(1); c 2; break;
         case 4: // immediate
@@ -144,7 +158,9 @@ void r(int x)
             T[S] = 0 > T[S]; break;
         case 12: // exit
             M_CHECK(m[1])
-            I = m[m[1]--]; break;
+            I = m[m[1]--];
+            RS_CHECK(m[1])
+            break;
         case 13: // echo
             T_CHECK(S)
             putchar(T[S]); S--; break;
@@ -179,7 +195,9 @@ int main()
         c i++;
     }
     m[1] = m[0];
-    m[0] += 512;
+    RS0 = m[1];
+    RS_CHECK(m[1])
+    m[0] += N_rs;
     for (;;) {
         M_CHECK(I)
         r(m[I++]);
