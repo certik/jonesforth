@@ -31,3 +31,6 @@ test: first
 	cat third demo4.th | ./first
 	cat third demo5.th | ./first
 	cat third demo6.th | ./first
+	cat third ../test_comparison.f testcommand.f | ./first | tail -n +3 > x
+	diff x ../test_comparison.f.out
+
