@@ -1,4 +1,4 @@
-: immediate _read @ ! - * / <0 exit echo key _pick
+: immediate _read @ ! - * / 0< exit echo key _pick
 
 : debug immediate 1 5 ! exit
 
@@ -48,7 +48,7 @@ _main
 
 : bnot 1 swap - ;
 
-: < - <0 ;
+: < - 0< ;
 
 : logical dup 0 < swap minus 0 < + ;
 
@@ -222,7 +222,6 @@ fix-'\n'
 : <> = not ;
 : 0= 0 = ;
 : 0<> 0 <> ;
-: 0< <0 ;
 : 0> 0 > ;
 : 0<= 0 <= ;
 : 0>= 0 >= ;
