@@ -46,7 +46,7 @@ int m[N_m]={32};
 int L=1; // m[L] is the last word added to main memory
 
 int T[N_T]; // Stack
-int S=0; // T[S] is the top of the stack (TOS)
+int S=-1; // T[S] is the value at the top of the stack (TOS).
 
 int RS0; // Bottom of the return stack
 

@@ -34,7 +34,7 @@ _main
 : ; immediate ' exit , exit
 
 
-: drop 0 * + ;
+: drop _x! ;
 
 : dec dup @ 1 - swap ! ;
 
