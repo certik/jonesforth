@@ -12,8 +12,12 @@ _main
 
 : _x 4 @ exit
 : _y 5 @ exit
+: _z 6 @ exit
+: _w 7 @ exit
 : _x! 4 ! exit
 : _y! 5 ! exit
+: _z! 6 ! exit
+: _w! 7 ! exit
 
 
 : swap _x! _y! _x _y exit
@@ -106,7 +110,15 @@ fix-')' )
   swap !		( put the address on top and store it )
 ;
 
-: over _x! _y! _y _x _y ;
+: over ( a b -- a b a ) _x! _y! _y _x _y ;
+: rot ( a b c -- b c a ) _x! _y! _z! _y _x _z ;
+: ?dup  ( a -- a a | 0 ) dup if dup then ;
+: -rot  ( a b c -- c a b ) rot rot ;
+: nip   ( a b -- b ) swap drop ;
+: tuck  ( a b -- b a b ) swap over ;
+: 2dup  ( a b -- a b a b ) over over ;
+: 2drop ( a b -- ) drop drop ;
+: 2swap ( a b c d -- c d a b ) _x! _y! _z! _w! _y _x _w _z ;
 
 : add
   _x!			( save the pointer in a temp variable )
