@@ -59,6 +59,12 @@ void error(char *message)
     exit(1);
 }
 
+int next_token(char *s)
+{
+    if (scanf("%s", s) != 1) return 1;
+    return 0;
+}
+
 /*
  * Add a new word (L, t, x) to a dictionary m[32..m[0]]
  *
@@ -73,7 +79,7 @@ void a(int x)
     c t; // s[t] is the name (string) of this word
     c x; // code instruction, between 0..16
     if (x < 0 || x > 15) error("'x' out of range");
-    if (scanf("%s", &s[t]) != 1) error("Unexpected end of input.");
+    if (next_token(&s[t])) error("Unexpected end of input.");
     t += strlen(&s[t])+1; // s[t] now points to the next available slot
     if (t + 64 > N_s) error("String storage too small.");
 }
@@ -107,7 +113,7 @@ void r(int x)
         case 4: // immediate
             m[0] -= 2; c 2; break;
         case 5: // _read
-            if (scanf("%s", s) != 1) exit(0);
+            if (next_token(s)) exit(0);
             // See if 's' is in the dictionary. The 'w' points to the current
             // word, i.e. m[w], m[w+1], m[w+2] is the header, i.e. m[w] is the
             // address of the previous word, m[w+1] is the index into string
