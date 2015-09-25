@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 #define N_m 20000  // Main memory size
 #define N_s  5000  // String storage size
@@ -59,9 +60,18 @@ void error(char *message)
     exit(1);
 }
 
+void convert_to_lowercase(char *s)
+{
+    int i;
+    for(i = 0; s[i]; i++) {
+        s[i] = tolower(s[i]);
+    }
+}
+
 int next_token(char *s)
 {
     if (scanf("%s", s) != 1) return 1;
+    convert_to_lowercase(s);
     return 0;
 }
 
