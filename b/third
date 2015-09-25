@@ -350,8 +350,8 @@ fix-::
 : dump _dump ;
 
 : # . cr ;
-  
-: var <build , does> ;
+
+: variable <build , does> ;
 : constant <build , does> @ ;
 : array <build allot does> + ;
 
