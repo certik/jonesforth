@@ -1,6 +1,6 @@
 : immediate _read @ ! - * / 0< exit echo key _pick
 
-: debug immediate 1 5 ! exit
+: debug immediate 1 6 ! exit
 
 : r 1 exit
 
@@ -10,10 +10,10 @@
 _main
 
 
-: _x 3 @ exit
-: _y 4 @ exit
-: _x! 3 ! exit
-: _y! 4 ! exit
+: _x 4 @ exit
+: _y 5 @ exit
+: _x! 4 ! exit
+: _y! 5 ! exit
 
 
 : swap _x! _y! _x _y exit
@@ -298,15 +298,15 @@ fix-::
 : : immediate :: ] ;
 
 : command
-  here 5 !		( store dict pointer in temp variable )
+  here 6 !		( store dict pointer in temp variable )
   _read			( compile a word )
 			( if we get control back: )
-  here 5 @
+  here 6 @
   = if
     tail command	( we didn't compile anything )
   then
   here 1 - h !		( decrement the dictionary pointer )
-  here 5 @		( get the original value )
+  here 6 @		( get the original value )
   = if
     here @		( get the word that was compiled )
     execute		( and run it )
